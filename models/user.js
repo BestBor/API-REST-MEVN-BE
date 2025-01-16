@@ -29,8 +29,12 @@ userSchema.pre("save", async function(next) {
         console.log(error)
         throw new Error("Falló el hash de contraseña")
     }
-})
+});
 
-export const User = model("User", userSchema)
+userSchema.methods.comparePassword = async function (clientPass) {
+    return await bcryptjs.compare(clientPass, this.password)
+};
+
+export const User = model("User", userSchema);
 
 
