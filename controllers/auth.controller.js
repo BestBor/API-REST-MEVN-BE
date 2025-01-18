@@ -1,4 +1,5 @@
-import { User } from "../models/User.js" 
+import { User } from "../models/User.js";
+import jwt from "jsonwebtoken";
 
 export const register = async (req, res) => {
     const { email, password } = req.body
@@ -11,6 +12,7 @@ export const register = async (req, res) => {
         await user.save()
 
         // jwt token
+        const token = jwt.sign({uid: user._id}, process.env.JWT_SECRET);
 
         return res.status(201).json({ok: "Usuario registrado"})
     } catch (error) {
@@ -32,8 +34,9 @@ export const login = async (req, res) => {
         if (!respuestaPass) return res.status(404).json({error: "Credenciales incorrectas"});
 
         // jwt token
+        const token = jwt.sign({uid: user._id}, process.env.JWT_SECRET);
 
-        return res.json({ ok: "login" })
+        return res.json({ token });
     } catch (error) {
         console.log(error)
     }
