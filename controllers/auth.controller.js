@@ -22,7 +22,7 @@ export const register = async (req, res) => {
         }
         return res.status(500).json({error: "Error de servidor"})
     }
-}
+};
 
 export const login = async (req, res) => {
     try {
@@ -41,5 +41,14 @@ export const login = async (req, res) => {
     } catch (error) {
         console.log(error);
         return res.status(500).json({error: "Error de servidor"});
+    }
+};
+
+export const infoUser = async (req, res) => {
+    try {
+        const user = await User.findById(req.uid).lean()
+        return res.json({ email: user.email, uid: user.id });
+    } catch (error) {
+        return res.status(500).json({ error: "Error de servidor" });
     }
 }
