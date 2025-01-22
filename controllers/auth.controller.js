@@ -44,10 +44,12 @@ export const login = async (req, res) => {
     }
 };
 
+
+// Intento con ruta protegida
 export const infoUser = async (req, res) => {
     try {
         const user = await User.findById(req.uid).lean()
-        return res.json({ email: user.email, uid: user.id });
+        return res.json({ uid: user.id, email: user.email });
     } catch (error) {
         return res.status(500).json({ error: "Error de servidor" });
     }
