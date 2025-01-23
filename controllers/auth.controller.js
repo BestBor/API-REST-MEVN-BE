@@ -38,7 +38,7 @@ export const login = async (req, res) => {
         const { token, expiresIn } = generateToken(user.id);
         generateRefreshToken(user.id, res)
 
-        return res.json({ token , expiresIn});
+        return res.json({ token , expiresIn });
     } catch (error) {
         console.log(error);
         return res.status(500).json({error: "Error de servidor"});
@@ -58,7 +58,7 @@ export const infoUser = async (req, res) => {
 
 export const refreshToken = (req, res) => {
     try {
-        const refreshTokenCookie = req.cookies.refreshToken
+        const refreshTokenCookie = req.cookies.refreshToken;
         if (!refreshTokenCookie) throw new Error("No Token");
 
         const { uid } = jwt.verify(refreshTokenCookie, process.env.JWT_REFRESH);
@@ -68,7 +68,7 @@ export const refreshToken = (req, res) => {
 
 
     } catch (error) {
-        console.log(error)
+        console.log(error.message)
         const TokenVerificationErrors = {
             "invalid signature": "La firma del JWT no es válida",
             "jwt expired": "JWT expirado",
