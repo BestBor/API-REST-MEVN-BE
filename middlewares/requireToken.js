@@ -8,7 +8,7 @@ export const requireToken = (req, res, next) => {
 
         token = token.split(" ")[1];
         const payload = jwt.verify(token, process.env.JWT_SECRET);
-        req.uid = payload.uid
+        req.uid = payload.uid;
         next();
     } catch (error) {
         console.log(error.message)
@@ -18,6 +18,7 @@ export const requireToken = (req, res, next) => {
             "jwt expired": "JWT expirado",
             "invalid token": "Token no válido",
             "No Bearer": "Utiliza formato Bearer",
+            "jwt malformed": "JWT con formato incorrecto"
         };
 
         return res
