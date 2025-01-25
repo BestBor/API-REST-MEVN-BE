@@ -66,7 +66,6 @@ export const refreshToken = (req, res) => {
 
         return res.json({ token, expiresIn });
 
-
     } catch (error) {
         console.log(error.message)
         const TokenVerificationErrors = {
@@ -81,4 +80,9 @@ export const refreshToken = (req, res) => {
             .status(401)
             .send({ error: TokenVerificationErrors[error.message] });
     }
+};
+
+export const logout = (req, res) => {
+    res.clearCookie('refreshToken')
+    res.json({ok: true})
 }
