@@ -36,8 +36,8 @@ router.post("/login",
 
 router.get("/secured", requireToken, infoUser);
 
-router.get("/refresh", refreshToken)
+router.get("/refresh", refreshToken);
 
-router.get("/logout", logout)
+router.get("/logout", logout);
 
 export default router;
