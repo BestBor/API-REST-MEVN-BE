@@ -1,21 +1,20 @@
 import { User } from "../models/User.js";
-import jwt from "jsonwebtoken";
 import { generateRefreshToken, generateToken } from "../utils/tokenManager.js";
 
 export const register = async (req, res) => {
-    const { email, password } = req.body
+    const { email, password } = req.body;
     try {
-        let user = new User({email, password})
-
-        await User.findOne({email});
-        if (user) throw ({code: 11000});
-
-        await user.save()
+        let user = await User.findOne({email});
+        if (user) throw ({ code: 11000 });
+        
+        user = new User({ email, password });
+        await user.save();
 
         // jwt token
-        const token = jwt.sign({uid: user._id}, process.env.JWT_SECRET);
+        const { token, expiresIn } = generateToken(user.id);
+        generateRefreshToken(user.id, res);
 
-        return res.status(201).json({ok: "Usuario registrado"})
+        return res.status(201).json({ token, expiresIn });
     } catch (error) {
         if (error.code == 11000) {
             return res.status(400).json({error: "Usuario ya existente"})

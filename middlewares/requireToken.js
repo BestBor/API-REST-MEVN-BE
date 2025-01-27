@@ -4,7 +4,6 @@ import { tokenVerificationErrors } from "../utils/tokenManager.js";
 export const requireToken = (req, res, next) => {
     try {
         let token = req.headers?.authorization;
-        console.log(token);
         if (!token) throw new Error("No Bearer")
 
         token = token.split(" ")[1];
