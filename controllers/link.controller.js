@@ -45,6 +45,30 @@ export const createLink = async (req, res) => {
     }
 };
 
+export const updateLink = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { longLink } = req.body;
+
+        if (!longLink.startsWith("https://")) {
+            longLink = "https://" + longLink
+        }
+
+        const link = await Link.findById(id);
+        if (!link) return res.status(404).json({error: "No existe este link"});
+        if (!link.uid.equals(req.uid)) return res.status(401).json({error: "Este link no le pertenece"});
+
+        link.longLink = longLink;
+        await link.save();
+
+        return res.json({ link });
+    } catch (error) {
+        console.log(error.message)
+        if (error.kind === "ObjectId") return res.status(403).json({error: "Formato incorrecto"})
+        return res.status(500).json({ error: "error de servidor" });
+    }
+};
+
 export const removeLink = async (req, res) => {
     try {
         const { id } = req.params;
