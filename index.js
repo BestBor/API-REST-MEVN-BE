@@ -2,12 +2,24 @@ import cookieParser from "cookie-parser";
 import "dotenv/config";
 import "./database/connectiondb.js"
 import express from "express";
+import cors from "cors";
 
 import authRouter from "./routes/auth.route.js"
 import linkRouter from "./routes/link.route.js";
 import redirectRouter from "./routes/redirect.route.js";
 
 const app = express();
+
+const whiteList = [process.env.ORIGIN]
+
+app.use(cors({
+    origin: function(origin, callback){
+        if (whiteList.includes(origin)) {
+            return callback(null, origin);
+        }
+        return callback("CORS error: "+ origin + "Unauthorized")
+    }
+}));
 
 app.use(express.json());
 app.use(cookieParser());
