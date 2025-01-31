@@ -12,7 +12,7 @@ export const getLinks = async (req, res) => {
     }
 };
 
-export const getLink = async (req, res) => {
+export const getLink1 = async (req, res) => {
     try {
         const { id } = req.params;
         const link = await Link.findById(id);
@@ -20,6 +20,21 @@ export const getLink = async (req, res) => {
         if (!link.uid.equals(req.uid)) return res.status(401).json({error: "Este link no le pertenece"});
 
         return res.json({link});
+    } catch (error) {
+        console.log(error.message)
+        if (error.kind === "ObjectId") return res.status(403).json({error: "Formato incorrecto"})
+        return res.status(500).json({ error: "error de servidor" });
+    }
+};
+
+export const getLink2 = async (req, res) => {
+    try {
+        const { nanoLink } = req.params;
+        const link = await Link.findOne({ nanoLink })
+
+        if (!link) return res.status(404).json({error: "No existe este link"});
+        
+        return res.json({ longLink: link.longLink });
     } catch (error) {
         console.log(error.message)
         if (error.kind === "ObjectId") return res.status(403).json({error: "Formato incorrecto"})
