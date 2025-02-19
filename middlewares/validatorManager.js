@@ -1,4 +1,4 @@
-import { validationResult, body } from "express-validator";
+import { validationResult, body, param } from "express-validator";
 import axios from "axios";
 
 export const validationResultExpress = (req, res, next) => {
