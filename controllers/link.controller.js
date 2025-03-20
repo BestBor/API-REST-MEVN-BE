@@ -91,7 +91,7 @@ export const removeLink = async (req, res) => {
         if (!link) return res.status(404).json({error: "No existe este link"});
         if (!link.uid.equals(req.uid)) return res.status(401).json({error: "Este link no le pertenece"});
 
-        await link.remove();
+        await link.deleteOne();
 
         return res.json({link});
     } catch (error) {
